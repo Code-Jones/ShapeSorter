@@ -5,23 +5,16 @@ import com.shapesorter.problemDomain.*;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StreamTokenizer;
-import java.util.Arrays;
 
-//TODO
-//      - read jar input
-//      - get filePath location
-//      - read filePath
-//      -
-//
- /*
-    Options:
-    -t - compare?
-    h - height
-    v - volume
-    a - area
-    -f - filePath
-    -h - help
-     */
+/*
+   Options:
+   -t - compare?
+   h - height
+   v - volume
+   a - area
+   -f - filePath
+   -h - help
+    */
 public class Main {
 
     public static void main(String[] args) {
@@ -66,15 +59,22 @@ public class Main {
         if (filePath != null) {
             System.out.printf("This is the file path given: %s %n", filePath);
             shapeList = populateList(filePath);
-            System.out.println(Arrays.toString(shapeList));
         }
 
     }
 
+    /**
+     * Populates a shapes list with the filePath given
+     * If it's not a correct path, throws error.
+     *
+     * @param filePath, file path
+     * @return shapes array
+     */
     private static Shapes[] populateList(String filePath) {
         try {
             FileReader reader = new FileReader(filePath);
             StreamTokenizer token = new StreamTokenizer(reader);
+            // set the first token for the length of the array
             int currentToken = token.nextToken();
 
             double length = token.nval;
@@ -82,14 +82,16 @@ public class Main {
             int iterator = 0;
             System.out.println("length = " + length);
 
+            // move it to the second token in the text, first object to be read
             currentToken = token.nextToken();
             while (currentToken != StreamTokenizer.TT_EOF) {
-
+                // get the 3 details of any object
                 String shape = token.sval;
                 currentToken = token.nextToken();
                 double measurement_1 = token.nval;
                 currentToken = token.nextToken();
                 double measurement_2 = token.nval;
+                // put it the right object
                 switch (shape) {
                         case "Cone":
                             Cone cone = new Cone(measurement_1, measurement_2);
@@ -120,6 +122,8 @@ public class Main {
                             shapesList[iterator] = pentPrism;
                             break;
                     }
+                // move the token to the next object name
+                // do at the end so you can see if end of file or not
                 currentToken = token.nextToken();
                 iterator++;
                 }
