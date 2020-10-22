@@ -1,7 +1,7 @@
 package com.shapesorter;
-//
-//public class notes {
-//}
+
+public class notes {
+}
 //public class MyArrays {
 //
 //    public static void sort(Comparable[] items, Controller controller, Comparator comparator) {
