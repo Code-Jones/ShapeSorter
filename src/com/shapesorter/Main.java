@@ -1,10 +1,11 @@
 package com.shapesorter;
 
-import com.shapesorter.problemDomain.Shapes;
+import com.shapesorter.problemDomain.*;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StreamTokenizer;
+import java.util.Arrays;
 
 //TODO
 //      - read jar input
@@ -30,6 +31,7 @@ public class Main {
         boolean volume = false;
         boolean area = false;
         String filePath = null;
+        Shapes[] shapeList;
 
         // reads all the args and sets state
         if (args.length != 0) {
@@ -60,35 +62,72 @@ public class Main {
                 }
             }
         } else printHelp();
-        
+
         if (filePath != null) {
             System.out.printf("This is the file path given: %s %n", filePath);
-            populateList(filePath);
+            shapeList = populateList(filePath);
+            System.out.println(Arrays.toString(shapeList));
         }
 
     }
 
-    private static void populateList(String filePath) {
-        Shapes[] shapesList;
+    private static Shapes[] populateList(String filePath) {
         try {
             FileReader reader = new FileReader(filePath);
             StreamTokenizer token = new StreamTokenizer(reader);
             int currentToken = token.nextToken();
+
             double length = token.nval;
+            Shapes[] shapesList = new Shapes[(int) length];
+            int iterator = 0;
             System.out.println("length = " + length);
+
+            currentToken = token.nextToken();
             while (currentToken != StreamTokenizer.TT_EOF) {
-                if (token.ttype == StreamTokenizer.TT_WORD) {
-                    System.out.println("Current token value : " + token.sval);
-                } else {
-                    System.out.println("Current token value : " + token.nval);
-                }
+
+                String shape = token.sval;
                 currentToken = token.nextToken();
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
+                double measurement_1 = token.nval;
+                currentToken = token.nextToken();
+                double measurement_2 = token.nval;
+                switch (shape) {
+                        case "Cone":
+                            Cone cone = new Cone(measurement_1, measurement_2);
+                            shapesList[iterator] = cone;
+                            break;
+                        case "Cylinder":
+                            Cylinder cylinder = new Cylinder(measurement_1, measurement_2);
+                            shapesList[iterator] = cylinder;
+                            break;
+                        case "Pyramid":
+                            Pyramid pyramid = new Pyramid(measurement_1, measurement_2);
+                            shapesList[iterator] = pyramid;
+                            break;
+                        case "SquarePrism":
+                            Prisms sqPrism = new Prisms(measurement_1, measurement_2, Prisms.shapeType.SquarePrism);
+                            shapesList[iterator] = sqPrism;
+                            break;
+                        case "TriangularPrism":
+                            Prisms triPrism = new Prisms(measurement_1, measurement_2, Prisms.shapeType.TriangularPrism);
+                            shapesList[iterator] = triPrism;
+                            break;
+                        case "OctagonalPrism":
+                            Prisms octPrism = new Prisms(measurement_1, measurement_2, Prisms.shapeType.OctagonalPrism);
+                            shapesList[iterator] = octPrism;
+                            break;
+                        case "PentagonalPrism":
+                            Prisms pentPrism = new Prisms(measurement_1, measurement_2, Prisms.shapeType.PentagonalPrism);
+                            shapesList[iterator] = pentPrism;
+                            break;
+                    }
+                currentToken = token.nextToken();
+                iterator++;
+                }
+            return shapesList;
+            } catch (IOException fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
         }
-
+        return new Shapes[0];
     }
 
     private static void printHelp() {
