@@ -5,6 +5,8 @@ import com.shapesorter.problemDomain.*;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StreamTokenizer;
+import java.util.Arrays;
+import java.util.Comparator;
 
 /*
    Options:
@@ -18,6 +20,7 @@ import java.io.StreamTokenizer;
 public class Main {
 
     public static void main(String[] args) {
+        boolean pathgiven;
         boolean running = true;
         boolean compare = false;
         boolean height = false;
@@ -25,6 +28,7 @@ public class Main {
         boolean area = false;
         String filePath = null;
         Shapes[] shapeList;
+        Comparable[] fuck;
 
         // reads all the args and sets state
         if (args.length != 0) {
@@ -43,6 +47,7 @@ public class Main {
                         area = true;
                         break;
                     case "-f":
+                        pathgiven = true;
                         ++i;
                         filePath = args[i];
                         break;
@@ -56,11 +61,21 @@ public class Main {
             }
         } else printHelp();
 
-        if (filePath != null) {
-            System.out.printf("This is the file path given: %s %n", filePath);
-            shapeList = populateList(filePath);
-        }
+        // for building default compare
+//        shapeList = populateList(filePath);
+        fuck = populateList(filePath);
 
+
+        if (compare && area) {
+
+            MyArrays.BaseAreaComparator bac = new MyArrays.BaseAreaComparator();
+            MyArrays.sort(fuck, 'B', bac);
+
+            System.out.println(Arrays.toString(fuck));
+//            System.out.println(shapeList[0].toString() + " : " + shapeList[1].toString());
+//            System.out.println(shapeList[0].baseArea + " : " + shapeList[1].baseArea);
+//            System.out.println(bac.compare(shapeList[0], shapeList[1]));
+        }
     }
 
     /**
@@ -106,19 +121,19 @@ public class Main {
                             shapesList[iterator] = pyramid;
                             break;
                         case "SquarePrism":
-                            Prisms sqPrism = new Prisms(measurement_1, measurement_2, Prisms.shapeType.SquarePrism);
+                            Prisms sqPrism = new Prisms(measurement_1, measurement_2, shapeType.SquarePrism);
                             shapesList[iterator] = sqPrism;
                             break;
                         case "TriangularPrism":
-                            Prisms triPrism = new Prisms(measurement_1, measurement_2, Prisms.shapeType.TriangularPrism);
+                            Prisms triPrism = new Prisms(measurement_1, measurement_2, shapeType.TriangularPrism);
                             shapesList[iterator] = triPrism;
                             break;
                         case "OctagonalPrism":
-                            Prisms octPrism = new Prisms(measurement_1, measurement_2, Prisms.shapeType.OctagonalPrism);
+                            Prisms octPrism = new Prisms(measurement_1, measurement_2, shapeType.OctagonalPrism);
                             shapesList[iterator] = octPrism;
                             break;
                         case "PentagonalPrism":
-                            Prisms pentPrism = new Prisms(measurement_1, measurement_2, Prisms.shapeType.PentagonalPrism);
+                            Prisms pentPrism = new Prisms(measurement_1, measurement_2, shapeType.PentagonalPrism);
                             shapesList[iterator] = pentPrism;
                             break;
                     }
@@ -137,5 +152,7 @@ public class Main {
     private static void printHelp() {
         System.out.println("this is in progress");
     }
+
+
 }
 

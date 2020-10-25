@@ -1,24 +1,20 @@
 package com.shapesorter.problemDomain;
 
 public class Prisms extends Shapes {
-    public double height;
-    public double edge;
+//    public double height;
+//    public double edge;
     public shapeType type;
-    public enum shapeType {
-        SquarePrism,
-        TriangularPrism,
-        PentagonalPrism,
-        OctagonalPrism
-    }
+
 
     public Prisms(double height, double edge, shapeType type) {
-        this.height = height;
-        this.edge = edge;
-        this.type = type;
+        super(height, edge, type);
+//        this.height = height;
+//        this.edge = edge;
+//        this.type = type;
     }
 
     @Override
-    public double calcBaseArea() {
+    public double calcBaseArea(double height, double edge, shapeType type) {
         switch (type) {
             case SquarePrism:
                 return Math.pow(edge, 2);
@@ -35,18 +31,33 @@ public class Prisms extends Shapes {
     }
 
     @Override
-    public double calcVolume() {
+    public double calcVolume(double height, double edge, shapeType type) {
         switch (type) {
             case SquarePrism:
                 return Math.pow(edge, 2) * height;
             case TriangularPrism:
             case PentagonalPrism:
             case OctagonalPrism:
-                return calcBaseArea() * height;
+                return calcBaseArea(height, edge, type) * height;
             default:
                 System.out.println("Something weird happened causing volume to not be assigned a type");
                 return 0;
         }
     }
 
+    @Override
+    public String toString() {
+        return "Prisms{" +
+                "baseArea=" + baseArea +
+                ", volume=" + volume +
+                ", measurement_1=" + measurement_1 +
+                ", measurement_2=" + measurement_2 +
+                ", type=" + type +
+                '}';
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
+    }
 }
