@@ -1,16 +1,11 @@
 package com.shapesorter.problemDomain;
 
 public class Prisms extends Shapes {
-//    public double height;
-//    public double edge;
     public shapeType type;
 
 
     public Prisms(double height, double edge, shapeType type) {
         super(height, edge, type);
-//        this.height = height;
-//        this.edge = edge;
-//        this.type = type;
     }
 
     @Override
@@ -50,14 +45,18 @@ public class Prisms extends Shapes {
         return "Prisms{" +
                 "baseArea=" + baseArea +
                 ", volume=" + volume +
-                ", measurement_1=" + measurement_1 +
+                ", height=" + height +
                 ", measurement_2=" + measurement_2 +
                 ", type=" + type +
                 '}';
     }
 
     @Override
-    public int compareTo(Object o) {
-        return 0;
+    public int compareTo(Shapes shape) {
+        if (shape.getHeight() == getHeight()) {
+            return 0;
+        } else if (shape.getHeight() >= this.height){
+            return 1;
+        } else return -1;
     }
 }

@@ -1,13 +1,9 @@
 package com.shapesorter.problemDomain;
 
 public class Cylinder extends Shapes {
-//    public double height;
-//    public double radius;
 
     public Cylinder(double height, double radius) {
         super(height, radius);
-//        this.height = height;
-//        this.radius = radius;
     }
 
     @Override
@@ -25,8 +21,18 @@ public class Cylinder extends Shapes {
         return "Cylinder{" +
                 "baseArea=" + baseArea +
                 ", volume=" + volume +
-                ", height=" + measurement_1 +
+                ", height=" + height +
                 ", radius=" + measurement_2 +
                 '}';
+    }
+
+
+    @Override
+    public int compareTo(Shapes shape) {
+        if (shape.getHeight() == getHeight()) {
+            return 0;
+        } else if (shape.getHeight() >= this.height){
+            return 1;
+        } else return -1;
     }
 }

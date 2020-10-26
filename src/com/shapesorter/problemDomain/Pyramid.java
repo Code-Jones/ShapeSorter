@@ -1,13 +1,9 @@
 package com.shapesorter.problemDomain;
 
 public class Pyramid extends Shapes {
-//    public double height;
-//    public double edgeLength;
 
     public Pyramid(double height, double edgeLength) {
         super(height, edgeLength);
-//        this.height = height;
-//        this.edgeLength = edgeLength;
     }
 
     @Override
@@ -25,8 +21,17 @@ public class Pyramid extends Shapes {
         return "Pyramid{" +
                 "baseArea=" + baseArea +
                 ", volume=" + volume +
-                ", height=" + measurement_1 +
+                ", height=" + height +
                 ", edge=" + measurement_2 +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Shapes shape) {
+        if (shape.getHeight() == getHeight()) {
+            return 0;
+        } else if (shape.getHeight() >= this.height){
+            return 1;
+        } else return -1;
     }
 }
