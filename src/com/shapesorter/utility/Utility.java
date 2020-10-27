@@ -98,7 +98,7 @@ public class Utility {
 
     private static void bubbleSort(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
         System.out.println("Bubble sort will start now");
-        long time = System.currentTimeMillis();
+        long time = System.nanoTime();
 
         // sort time
         Shapes temp;
@@ -120,14 +120,14 @@ public class Utility {
             }
         }
         // printing stuff
-        double endTime = (double) (System.currentTimeMillis() - time);
+        double endTime = (double) (System.nanoTime() - time) / 1000;
         System.out.printf("Bubble sort took : %.2f milliseconds %n", endTime);
         printInfo(shapes, comparator, height);
     }
 
     private static void selectionSort(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
         System.out.println("Selection sort will start now");
-        long time = System.currentTimeMillis();
+        long time = System.nanoTime();
 
         // sort time
         int small;
@@ -155,14 +155,14 @@ public class Utility {
             }
         }
         // printing stuff
-        double endTime = (double) (System.currentTimeMillis() - time);
+        double endTime = (double) (System.nanoTime() - time) / 1000;
         System.out.printf("Selection sort took : %.2f milliseconds %n", endTime);
         printInfo(shapes, comparator, height);
     }
 
     private static void insertionSort(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
         System.out.println("Insertion sort will start now");
-        long time = System.currentTimeMillis();
+        long time = System.nanoTime();
 
         // sort time
         for (int i = 1; i < shapes.length; i++) {
@@ -184,72 +184,132 @@ public class Utility {
             shapes[j + 1] = key;
         }
         // printing stuff
-        double endTime = (double) (System.currentTimeMillis() - time);
+        double endTime = (double) (System.nanoTime() - time) / 1000;
         System.out.printf("Insertion sort took : %.2f milliseconds %n", endTime);
         printInfo(shapes, comparator, height);
     }
 
     private static void mergeSort(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
         System.out.println("Merge sort will start now");
-        long time = System.currentTimeMillis();
+        long time = System.nanoTime();
 
         // sort time
-        innerMergeSort(shapes, shapes.length);
+        // uses recursion so in the method it goes
+        innerMergeSort(shapes, shapes.length, comparator, height);
 
+        // printing stuff
+        double endTime = (double) (System.nanoTime() - time) / 1000;
+        System.out.printf("Merge sort took : %.2f milliseconds %n", endTime);
+        printInfo(shapes, comparator, height);
     }
 
-    public static void innerMergeSort(Shapes[] a, int n) {
-        if (n < 2) {
+    public static void innerMergeSort(Shapes[] all, int size, Comparator<Shapes> comparator, boolean height) {
+        if (size < 2) {
             return;
         }
-        int mid = n / 2;
-        int[] l = new int[mid];
-        int[] r = new int[n - mid];
+        int mid = size / 2;
+        Shapes[] left = new Shapes[mid];
+        Shapes[] right = new Shapes[size - mid];
 
-        for (int i = 0; i < mid; i++) {
-            l[i] = a[i];
-        }
-        for (int i = mid; i < n; i++) {
-            r[i - mid] = a[i];
-        }
-        innerMergeSort(l, mid);
-        innerMergeSort(r, n - mid);
+        System.arraycopy(all, 0, left, 0, mid);
+        if (size - mid >= 0) System.arraycopy(all, mid, right, mid - mid, size - mid);
 
-        merge(a, l, r, mid, n - mid);
+        innerMergeSort(left, mid, comparator, height);
+        innerMergeSort(right, size - mid, comparator, height);
+
+        merge(all, left, right, mid, size - mid, comparator, height);
 
     }
-    public static void merge(
-            int[] a, int[] l, int[] r, int left, int right) {
 
+    public static void merge(Shapes[] all, Shapes[] leftList, Shapes[] rightList, int left, int right, Comparator<Shapes> comparator, boolean height) {
         int i = 0, j = 0, k = 0;
         while (i < left && j < right) {
-            if (l[i] <= r[j]) {
-                a[k++] = l[i++];
-            }
-            else {
-                a[k++] = r[j++];
+            if (height) {
+                if (leftList[i].compareTo(rightList[j]) < 0) {
+                    all[k++] = leftList[i++];
+                } else {
+                    all[k++] = rightList[j++];
+                }
+            } else {
+                if (comparator.compare(leftList[i], rightList[j]) > 0) {
+                    all[k++] = leftList[i++];
+                } else {
+                    all[k++] = rightList[j++];
+                }
             }
         }
         while (i < left) {
-            a[k++] = l[i++];
+            all[k++] = leftList[i++];
         }
         while (j < right) {
-            a[k++] = r[j++];
+            all[k++] = rightList[j++];
         }
     }
 
     private static void quickSort(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
         System.out.println("Quick sort will start now");
-        long time = System.currentTimeMillis();
+        long time = System.nanoTime();
 
         // sort time
+        // uses recursion so in the method it goes
+        innerQuickSort(0, shapes.length - 1, shapes, comparator, height);
+
+        // printing stuff
+        double endTime = (double) (System.nanoTime() - time) / 1000;
+        System.out.printf("Quick sort took : %.2f milliseconds %n", endTime);
+        printInfo(shapes, comparator, height);
+    }
+
+    private static void innerQuickSort(int left, int right, Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
+        if (left < right) {
+            int p = part(shapes, comparator, left, right, height);
+            innerQuickSort(left, p - 1, shapes, comparator, height);
+            innerQuickSort(p + 1, right, shapes, comparator, height);
+        }
+    }
+
+    private static int part(Shapes[] shapes, Comparator<Shapes> comparator, int left, int right, boolean height) {
+        Shapes piv = shapes[left];
+        int p = left;
+
+        for (int r = left; r < right; r++) {
+            int comp;
+            if (height) {
+                comp = shapes[r].compareTo(piv);
+            } else {
+                comp = comparator.compare(shapes[r], piv);
+            }
+            if (comp > 0) {
+                shapes[p] = shapes[r];
+                shapes[r] = shapes[p + 1];
+                shapes[p + 1] = piv;
+                p++;
+            }
+        }
+        return p;
     }
 
     private static void myChoiceSort(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
         System.out.println("Insertion sort will start now");
-        long time = System.currentTimeMillis();
+        long time = System.nanoTime();
+
 
         // sort time
+        int i = 0;
+        for (int j = 1; j < shapes.length; i++, j++) {
+            if (shapes2[i] > shapes2[j]) {
+                i--;
+            } else {
+                if (j - i > 1) {
+                    array[i + 1] = array[j];
+                }
+            }
+        }
+
+        // printing stuff
+        double endTime = (double) (System.nanoTime() - time) / 1000;
+        System.out.printf("Quick sort took : %.2f milliseconds %n", endTime);
+        printInfo(shapes, comparator, height);
     }
 
     /**
@@ -335,7 +395,7 @@ public class Utility {
             System.out.printf("The smallest shape's height is: %.2f %n", shapes[shapes.length - 1].height);
         } else if (comparator.toString().equals("BaseAreaComparator")) {
             System.out.printf("The biggest shape's base area is: %.2f %n", shapes[0].baseArea);
-            for (int i = 0; i < shapes.length; i++) {
+            for (int i = 1; i < shapes.length; i++) {
                 if (i % 1000 == 0) {
                     System.out.printf("Number %d shape's base area is: %.2f %n", i, shapes[i].baseArea);
                 }
@@ -351,7 +411,6 @@ public class Utility {
             System.out.printf("The smallest shape's volume is: %.2f %n", shapes[shapes.length - 1].volume);
         }
     }
-
 
 
     public static class BaseAreaComparator implements Comparator<Shapes> {
