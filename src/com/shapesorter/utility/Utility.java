@@ -97,12 +97,10 @@ public class Utility {
     }
 
     private static void bubbleSort(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
-        System.out.println("should bubble sort now");
+        System.out.println("Bubble sort will start now");
         long time = System.currentTimeMillis();
-        if (height) System.out.printf("First shape height : %.2f %n", shapes[0].height);
-        else {
-            System.out.printf("First shape base area : %.2f %n", shapes[0].baseArea);
-        }
+
+        // sort time
         Shapes temp;
         for (int i = 0; i < shapes.length; i++) {
             for (int j = 1; j < (shapes.length - i); j++) {
@@ -113,7 +111,7 @@ public class Utility {
                         shapes[j] = temp;
                     }
                 } else {
-                    if (comparator.compare(shapes[j - 1], shapes[j]) > 0) {
+                    if (comparator.compare(shapes[j - 1], shapes[j]) < 0) {
                         temp = shapes[j - 1];
                         shapes[j - 1] = shapes[j];
                         shapes[j] = temp;
@@ -121,29 +119,137 @@ public class Utility {
                 }
             }
         }
-        System.out.printf("Bubble sort took : %.2f %n", (double) (System.currentTimeMillis() - time));
-        for (int i = 0; i < shapes.length; i++) {
-            if (i % 1000 == 0) {
-                System.out.printf("Hopefully this is sorted : %.2f %n", shapes[i].height);
-            }
-        }
-        System.out.printf("Last shape : %.2f %n", height ? shapes[shapes.length - 1].height : shapes[shapes.length - 1].baseArea);
-
+        // printing stuff
+        double endTime = (double) (System.currentTimeMillis() - time);
+        System.out.printf("Bubble sort took : %.2f milliseconds %n", endTime);
+        printInfo(shapes, comparator, height);
     }
 
     private static void selectionSort(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
+        System.out.println("Selection sort will start now");
+        long time = System.currentTimeMillis();
+
+        // sort time
+        int small;
+        for (int i = 0; i < shapes.length - 1; i++) {
+            Shapes lowest = shapes[i];
+            int lowestIndex = i;
+            for (int j = i; j < shapes.length; j++) {
+                if (height) {
+                    if (shapes[j].compareTo(lowest) < 0) {
+                        lowest = shapes[j];
+                        lowestIndex = j;
+                    }
+                } else {
+                    if (comparator.compare(shapes[j], lowest) > 0) {
+                        lowest = shapes[j];
+                        lowestIndex = j;
+                    }
+                }
+            }
+            //Swap
+            if (i != lowestIndex) {
+                Shapes temp = shapes[i];
+                shapes[i] = shapes[lowestIndex];
+                shapes[lowestIndex] = temp;
+            }
+        }
+        // printing stuff
+        double endTime = (double) (System.currentTimeMillis() - time);
+        System.out.printf("Selection sort took : %.2f milliseconds %n", endTime);
+        printInfo(shapes, comparator, height);
     }
 
     private static void insertionSort(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
+        System.out.println("Insertion sort will start now");
+        long time = System.currentTimeMillis();
+
+        // sort time
+        for (int i = 1; i < shapes.length; i++) {
+            Shapes key = shapes[i];
+            int j = i - 1;
+            //shift until you find the position to place the element 'key'
+            if (height) {
+                while (j >= 0 && shapes[j].compareTo(key) > 0) {
+                    shapes[j + 1] = shapes[j];
+                    j--;
+                }
+            } else {
+                while (j >= 0 && comparator.compare(shapes[j], key) < 0) {
+                    shapes[j + 1] = shapes[j];
+                    j--;
+                }
+            }
+            //place element 'key' in the correct position in the sorted part of the array
+            shapes[j + 1] = key;
+        }
+        // printing stuff
+        double endTime = (double) (System.currentTimeMillis() - time);
+        System.out.printf("Insertion sort took : %.2f milliseconds %n", endTime);
+        printInfo(shapes, comparator, height);
     }
 
     private static void mergeSort(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
+        System.out.println("Merge sort will start now");
+        long time = System.currentTimeMillis();
+
+        // sort time
+        innerMergeSort(shapes, shapes.length);
+
+    }
+
+    public static void innerMergeSort(Shapes[] a, int n) {
+        if (n < 2) {
+            return;
+        }
+        int mid = n / 2;
+        int[] l = new int[mid];
+        int[] r = new int[n - mid];
+
+        for (int i = 0; i < mid; i++) {
+            l[i] = a[i];
+        }
+        for (int i = mid; i < n; i++) {
+            r[i - mid] = a[i];
+        }
+        innerMergeSort(l, mid);
+        innerMergeSort(r, n - mid);
+
+        merge(a, l, r, mid, n - mid);
+
+    }
+    public static void merge(
+            int[] a, int[] l, int[] r, int left, int right) {
+
+        int i = 0, j = 0, k = 0;
+        while (i < left && j < right) {
+            if (l[i] <= r[j]) {
+                a[k++] = l[i++];
+            }
+            else {
+                a[k++] = r[j++];
+            }
+        }
+        while (i < left) {
+            a[k++] = l[i++];
+        }
+        while (j < right) {
+            a[k++] = r[j++];
+        }
     }
 
     private static void quickSort(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
+        System.out.println("Quick sort will start now");
+        long time = System.currentTimeMillis();
+
+        // sort time
     }
 
     private static void myChoiceSort(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
+        System.out.println("Insertion sort will start now");
+        long time = System.currentTimeMillis();
+
+        // sort time
     }
 
     /**
@@ -164,7 +270,7 @@ public class Utility {
             double length = token.nval;
             Shapes[] shapesList = new Shapes[(int) length];
             int iterator = 0;
-            System.out.println("length = " + length);
+            System.out.printf("There are %.0f shapes in the file loaded%n", length);
 
             // move it to the second token in the text, first object to be read
             currentToken = token.nextToken();
@@ -218,6 +324,36 @@ public class Utility {
         return new Shapes[0];
     }
 
+    private static void printInfo(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
+        if (height) {
+            System.out.printf("The biggest shape's height is: %.2f %n", shapes[0].height);
+            for (int i = 1; i < shapes.length; i++) {
+                if (i % 1000 == 0) {
+                    System.out.printf("Number %d shape's height is: %.2f %n", i, shapes[i].height);
+                }
+            }
+            System.out.printf("The smallest shape's height is: %.2f %n", shapes[shapes.length - 1].height);
+        } else if (comparator.toString().equals("BaseAreaComparator")) {
+            System.out.printf("The biggest shape's base area is: %.2f %n", shapes[0].baseArea);
+            for (int i = 0; i < shapes.length; i++) {
+                if (i % 1000 == 0) {
+                    System.out.printf("Number %d shape's base area is: %.2f %n", i, shapes[i].baseArea);
+                }
+            }
+            System.out.printf("The smallest shape's base area is: %.2f %n", shapes[shapes.length - 1].baseArea);
+        } else {
+            System.out.printf("The biggest shape's volume is: %.2f %n", shapes[0].volume);
+            for (int i = 1; i < shapes.length; i++) {
+                if (i % 1000 == 0) {
+                    System.out.printf("Number %d shape's volume is: %.2f %n", i, shapes[i].volume);
+                }
+            }
+            System.out.printf("The smallest shape's volume is: %.2f %n", shapes[shapes.length - 1].volume);
+        }
+    }
+
+
+
     public static class BaseAreaComparator implements Comparator<Shapes> {
 
         @Override
@@ -229,6 +365,10 @@ public class Utility {
             } else return -1;
         }
 
+        @Override
+        public String toString() {
+            return "BaseAreaComparator";
+        }
     }
 
     public static class VolumeComparator implements Comparator<Shapes> {
@@ -240,6 +380,11 @@ public class Utility {
             } else if (o1.baseArea >= o2.baseArea) {
                 return 1;
             } else return -1;
+        }
+
+        @Override
+        public String toString() {
+            return "VolumeComparator";
         }
     }
 }

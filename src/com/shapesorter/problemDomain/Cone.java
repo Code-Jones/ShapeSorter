@@ -16,7 +16,6 @@ public class Cone extends Shapes {
         return (1.0 / 3.0) * Math.PI * Math.pow(radius, 2) * height;
     }
 
-
     @Override
     public String toString() {
         return "Cone{" +

@@ -26,12 +26,13 @@ public class Main {
         if (args.length != 0) {
             for (String arg : args) {
                 if (arg.toLowerCase().startsWith("-f")) {
-                    filePath = "res/" + arg.substring(2);
+                    filePath = ".\\" + arg.substring(2);
+                    // quick fix fixme <-
+                    filePath += ".txt";
                     pathGiven = true;
-                    System.out.println(filePath);
+//                    System.out.println(filePath);
                 } else if (arg.toLowerCase().startsWith("-t")) {
                     compGiven = true;
-                    System.out.println(arg);
                     switch (arg.toLowerCase().substring(2)) {
                         case "h":
                             comparator = 'h';
@@ -47,7 +48,6 @@ public class Main {
                             return;
                     }
                 } else if (arg.toLowerCase().startsWith("-s")) {
-                    System.out.println(arg);
                     sortGiven = true;
                     switch (arg.toLowerCase().substring(2)) {
                         case "b":
@@ -72,8 +72,11 @@ public class Main {
                             printHelp();
                             return;
                     }
+                } else if (arg.equals(".txt")) {
+                    continue; // quick fix
                 } else printHelp();
             }
+//            System.out.println("Pathgiven : " + pathGiven + " sortGiven : " + sortGiven + " compGiven : " + compGiven);
             if (pathGiven && sortGiven && compGiven) {
                 Utility.sort(comparator, sort, filePath);
             } else setFalse();
@@ -82,7 +85,6 @@ public class Main {
 
     private static void printHelp() {
         System.out.println("this is in progress");
-        setFalse();
     }
 
     private static void setFalse() {
