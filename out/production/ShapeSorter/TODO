@@ -1,6 +1,4 @@
 TODO
- - File name F, the compare type and the sort type are provided as parameters (-f –t –s or -F –T –S) via
-   command line. The program must be order and case insensitive. For example, all examples below are
    valid inputs:
    java -jar sort.jar –fpolyfor1.txt –Tv –Sb
    java -jar sort.jar –ta –sQ –fpolyfor3.txt
