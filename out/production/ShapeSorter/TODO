@@ -1,9 +1,5 @@
 TODO
- - Implement the compareTo() method of the Comparable interface to compare two shapes by
-   their height, and the compare() method of the Comparator interface to compare two shapes
-   by their base area and their volume.
- - testing application will then invoke the utility methods to re-arrange the figures according to the
-   compare type from the largest to smallest (descending order).
+ - largest to smallest (descending order).
  - The testing program should print the time it took to sort the collection of objects for each sorting
   algorithm. It should also print the first and last value and every thousandth value in between.
  - Implement the sorting algorithms as part of a utility class. It must sort a collection of Comparables.

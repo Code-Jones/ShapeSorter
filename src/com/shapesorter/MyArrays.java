@@ -9,27 +9,43 @@ import java.util.Comparator;
 
 public class MyArrays {
 
-    public static void sort(char sortAlgorithm, String filePath) {
+    public static void sort(char parameter, char sort, String filePath) {
         BaseAreaComparator bac = new BaseAreaComparator();
-        Comparable[] fuck = populateList(filePath);
+        Shapes[] fuck = populateList(filePath);
         // fixme do this
-        if (sortAlgorithm == 'B') {
-            bubbleSort(fuck, bac);
-        }
+        bubbleSort(fuck, bac, false);
     }
 
-    private static void bubbleSort(Comparable[] items, Comparator comparator) {
+    private static void bubbleSort(Shapes[] items, BaseAreaComparator comparator, boolean height) {
         System.out.println("should bubble sort now");
-        Comparable temp;
+        long time = System.currentTimeMillis();
+        if (height) System.out.printf("First shape height : %.2f %n", items[0].height);
+        else {
+            System.out.printf("First shape base area : %.2f %n", items[0].baseArea);
+        }
+        Shapes temp;
         for (int i = 0; i < items.length; i++) {
+            if (i % 1000 == 0) {
+                System.out.printf("progress... : %.2f %n", height ? items[i].height : items[i].baseArea);
+            }
             for (int j = 1; j < (items.length - i); j++) {
-                if (comparator.compare(items[j - 1], items[j]) > 0) {
-                    temp = items[j - 1];
-                    items[j - 1] = items[j];
-                    items[j] = temp;
+                if (height) {
+                    if (items[j - 1].compareTo(items[j]) > 0) {
+                        temp = items[j - 1];
+                        items[j - 1] = items[j];
+                        items[j] = temp;
+                    }
+                } else {
+                    if (comparator.compare(items[j - 1], items[j]) > 0) {
+                        temp = items[j - 1];
+                        items[j - 1] = items[j];
+                        items[j] = temp;
+                    }
                 }
             }
         }
+        System.out.printf("Last shape base area : %.2f", height ? items[items.length - 1].height : items[items.length - 1].baseArea);
+        System.out.printf("Bubble sort took : %.2f %n", (double) (System.currentTimeMillis() - time));
     }
 
     /**
@@ -108,15 +124,24 @@ public class MyArrays {
 
         @Override
         public int compare(Shapes o1, Shapes o2) {
-            return (int) (o1.baseArea - o2.baseArea);
+            if (o1.baseArea == o2.baseArea) {
+                return 0;
+            } else if (o1.baseArea >= o2.baseArea) {
+                return 1;
+            } else return -1;
         }
+
     }
 
     public static class VolumeComparator implements Comparator<Shapes> {
 
         @Override
         public int compare(Shapes o1, Shapes o2) {
-            return (int) (o1.volume - o2.volume);
+            if (o1.baseArea == o2.baseArea) {
+                return 0;
+            } else if (o1.baseArea >= o2.baseArea) {
+                return 1;
+            } else return -1;
         }
     }
 }

@@ -46,7 +46,6 @@ public class Main {
                     case "-f":
                         i++;
                         try {
-                            // this is all because we aren't doing -f filepath like normal jars do
                             filePath = args[i];
                             pathGiven = true;
                             break;
@@ -76,11 +75,11 @@ public class Main {
 
         if (pathGiven && compare) {
             if (height) {
-                MyArrays.sort('H', filePath);
+                MyArrays.sort('H', 'B', filePath);
             } else if (volume) {
-                MyArrays.sort('V', filePath);
+                MyArrays.sort('V','B', filePath);
             } else if (area) {
-                MyArrays.sort('B', filePath);
+                MyArrays.sort('A', 'B', filePath);
             } else {
                 System.out.println("Invalid entry");
                 printHelp();

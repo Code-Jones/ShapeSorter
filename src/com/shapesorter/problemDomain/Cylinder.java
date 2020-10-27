@@ -29,7 +29,7 @@ public class Cylinder extends Shapes {
 
     @Override
     public int compareTo(Shapes shape) {
-        if (shape.getHeight() == getHeight()) {
+        if (shape.getHeight() == this.height) {
             return 0;
         } else if (shape.getHeight() >= this.height){
             return 1;
