@@ -1,5 +1,12 @@
 package com.shapesorter.problemDomain;
 
+/**
+ * @author Matt Jones
+ * @version 1
+ *
+ * Prisms shapes, There are 4 different prisms and they get set their type in their constructor
+ *
+ */
 public class Prisms extends Shapes {
     public shapeType type;
 

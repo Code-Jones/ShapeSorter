@@ -1,12 +1,4 @@
 TODO
- - largest to smallest (descending order).
- - The testing program should print the time it took to sort the collection of objects for each sorting
-  algorithm. It should also print the first and last value and every thousandth value in between.
- - Implement the sorting algorithms as part of a utility class. It must sort a collection of Comparables.
-   Make sure it is not dependent on the testing application and that it can be re-used in the future. (Your
-   sorting methods should be invoked like the Arrays.sort() method.)
- - File name F, the compare type and the sort type are provided as parameters (-f –t –s or -F –T –S) via
-   command line. The program must be order and case insensitive. For example, all examples below are
    valid inputs:
    java -jar sort.jar –fpolyfor1.txt –Tv –Sb
    java -jar sort.jar –ta –sQ –fpolyfor3.txt

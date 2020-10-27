@@ -1,5 +1,12 @@
 package com.shapesorter.problemDomain;
 
+/**
+ * @author Matt Jones
+ * @version 1
+ *
+ * Cylinder shape
+ *
+ */
 public class Cylinder extends Shapes {
 
     public Cylinder(double height, double radius) {

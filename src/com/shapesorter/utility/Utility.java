@@ -5,10 +5,20 @@ import com.shapesorter.problemDomain.*;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StreamTokenizer;
+import java.util.Arrays;
 import java.util.Comparator;
+
+import static java.util.Collections.shuffle;
 
 public class Utility {
 
+    /**
+     * @param comparator the given comparator the user has picked
+     * @param sort the given sorting algorithm the user has picked
+     * @param filePath the file path from the jar arguments
+     *
+     * this method will take the user input and input into the correct sort method
+     */
     public static void sort(char comparator, char sort, String filePath) {
         Shapes[] shapes = populateList(filePath);
         VolumeComparator vc = new VolumeComparator();
@@ -96,6 +106,13 @@ public class Utility {
         }
     }
 
+    /**
+     * @param shapes comparator list
+     * @param comparator chosen comparator
+     * @param height if height was chosen by the user
+     *
+     * Classic bubble sort
+     */
     private static void bubbleSort(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
         System.out.println("Bubble sort will start now");
         long time = System.nanoTime();
@@ -125,6 +142,13 @@ public class Utility {
         printInfo(shapes, comparator, height);
     }
 
+    /**
+     * @param shapes comparator list
+     * @param comparator chosen comparator
+     * @param height if height was chosen by the user
+     *
+     * Classic selection sort
+     */
     private static void selectionSort(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
         System.out.println("Selection sort will start now");
         long time = System.nanoTime();
@@ -160,6 +184,13 @@ public class Utility {
         printInfo(shapes, comparator, height);
     }
 
+    /**
+     * @param shapes comparator list
+     * @param comparator chosen comparator
+     * @param height if height was chosen by the user
+     *
+     * Classic insertion sort
+     */
     private static void insertionSort(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
         System.out.println("Insertion sort will start now");
         long time = System.nanoTime();
@@ -189,6 +220,13 @@ public class Utility {
         printInfo(shapes, comparator, height);
     }
 
+    /**
+     * @param shapes comparator list
+     * @param comparator chosen comparator
+     * @param height if height was chosen by the user
+     *
+     * Classic merge sort, this uses recursion so innerMergeSort() and merge() are part of this sort
+     */
     private static void mergeSort(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
         System.out.println("Merge sort will start now");
         long time = System.nanoTime();
@@ -203,6 +241,12 @@ public class Utility {
         printInfo(shapes, comparator, height);
     }
 
+    /**
+     * @param all the whole list
+     * @param size size of the list
+     * @param comparator chosen comparator
+     * @param height if height was chosen by the user
+     */
     public static void innerMergeSort(Shapes[] all, int size, Comparator<Shapes> comparator, boolean height) {
         if (size < 2) {
             return;
@@ -212,7 +256,7 @@ public class Utility {
         Shapes[] right = new Shapes[size - mid];
 
         System.arraycopy(all, 0, left, 0, mid);
-        if (size - mid >= 0) System.arraycopy(all, mid, right, mid - mid, size - mid);
+        if (size - mid >= 0) System.arraycopy(all, mid, right, mid - mid, size - mid); // don't change mid - mid
 
         innerMergeSort(left, mid, comparator, height);
         innerMergeSort(right, size - mid, comparator, height);
@@ -221,6 +265,16 @@ public class Utility {
 
     }
 
+
+    /**
+     * @param all the whole list
+     * @param leftList the left side of the list
+     * @param rightList the right side of the list
+     * @param left the left side size
+     * @param right the right side size
+     * @param comparator chosen comparator
+     * @param height if height was chosen by the user
+     */
     public static void merge(Shapes[] all, Shapes[] leftList, Shapes[] rightList, int left, int right, Comparator<Shapes> comparator, boolean height) {
         int i = 0, j = 0, k = 0;
         while (i < left && j < right) {
@@ -246,6 +300,13 @@ public class Utility {
         }
     }
 
+    /**
+     * @param shapes comparator list
+     * @param comparator chosen comparator
+     * @param height if height was chosen by the user
+     *
+     * Classic merge sort, this uses recursion so innerMergeSort() and merge() are part of this sort
+     */
     private static void quickSort(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
         System.out.println("Quick sort will start now");
         long time = System.nanoTime();
@@ -260,6 +321,13 @@ public class Utility {
         printInfo(shapes, comparator, height);
     }
 
+    /**
+     * @param left left side (small)
+     * @param right right side (large)
+     * @param shapes comparator list
+     * @param comparator chosen comparator
+     * @param height if height was chosen by the user
+     */
     private static void innerQuickSort(int left, int right, Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
         if (left < right) {
             int p = part(shapes, comparator, left, right, height);
@@ -289,27 +357,52 @@ public class Utility {
         return p;
     }
 
+    /**
+     * @param shapes comparator list
+     * @param comparator chosen comparator
+     * @param height if height was chosen by the user
+     *
+     * A mix between Thanos and Bogo sort, good luck ?!
+     */
     private static void myChoiceSort(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
-        System.out.println("Insertion sort will start now");
+        System.out.println("Sorta Thanos/Bogo sort will start now");
         long time = System.nanoTime();
 
 
         // sort time
-        int i = 0;
-        for (int j = 1; j < shapes.length; i++, j++) {
-            if (shapes2[i] > shapes2[j]) {
-                i--;
-            } else {
-                if (j - i > 1) {
-                    array[i + 1] = array[j];
-                }
-            }
+        while (notSorted(shapes, comparator, height)) {
+            Shapes[] temp = new Shapes[shapes.length / 2];
+            if (shapes.length - shapes.length / 2 >= 0)
+                System.arraycopy(shapes, shapes.length / 2, temp, shapes.length / 2, shapes.length - shapes.length / 2);
+            shuffle(Arrays.asList(shapes));
         }
 
         // printing stuff
         double endTime = (double) (System.nanoTime() - time) / 1000;
-        System.out.printf("Quick sort took : %.2f milliseconds %n", endTime);
+        System.out.printf("Sorta Thanos/Bogo sort took : %.2f milliseconds %n", endTime);
         printInfo(shapes, comparator, height);
+    }
+
+
+    /**
+     * @param shapes comparator list
+     * @param comparator chosen comparator
+     * @param height if height was chosen by the user
+     * @return if it's sorted or not
+     */
+    private static boolean notSorted(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
+        for (int i = 1; i < shapes.length; i++) {
+            if (height) {
+                if (shapes[i].compareTo(shapes[i - 1]) > 0 ) {
+                    return false;
+                }
+            } else {
+                if (comparator.compare(shapes[i], shapes[i - 1]) > 0) {
+                    return  false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -384,6 +477,14 @@ public class Utility {
         return new Shapes[0];
     }
 
+
+    /**
+     * @param shapes comparator list
+     * @param comparator chosen comparator
+     * @param height if height was chosen by the user
+     *
+     * Prints information from the sort that has been implemented. Does first, last, and every thousandth.
+     */
     private static void printInfo(Shapes[] shapes, Comparator<Shapes> comparator, boolean height) {
         if (height) {
             System.out.printf("The biggest shape's height is: %.2f %n", shapes[0].height);
@@ -413,6 +514,12 @@ public class Utility {
     }
 
 
+    /**
+     * This is the base area comparator,
+     * returns 1 if it's greater than
+     * returns 0 if it's equal
+     * returns -1 if it's less than
+     */
     public static class BaseAreaComparator implements Comparator<Shapes> {
 
         @Override
@@ -430,6 +537,12 @@ public class Utility {
         }
     }
 
+    /**
+     * This is the volume comparator,
+     * returns 1 if it's greater than
+     * returns 0 if it's equal
+     * returns -1 if it's less than
+     */
     public static class VolumeComparator implements Comparator<Shapes> {
 
         @Override

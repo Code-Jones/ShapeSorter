@@ -1,5 +1,12 @@
 package com.shapesorter.problemDomain;
 
+/**
+ * @author Matt Jones
+ * @version 1
+ *
+ * Cone shape
+ *
+ */
 public class Cone extends Shapes {
 
     public Cone(double height, double radius) {

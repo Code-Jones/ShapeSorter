@@ -1,5 +1,12 @@
 package com.shapesorter.problemDomain;
 
+/**
+ * @author Matt Jones
+ * @version 1
+ *
+ * Pyramid shape
+ *
+ */
 public class Pyramid extends Shapes {
 
     public Pyramid(double height, double edgeLength) {

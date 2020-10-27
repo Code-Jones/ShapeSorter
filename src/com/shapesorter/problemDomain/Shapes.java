@@ -1,5 +1,12 @@
 package com.shapesorter.problemDomain;
 
+/**
+ * @author Matt Jones
+ * @version 1
+ *
+ * This is the abstract class which all the shapes are based after.
+ * The second constructor is only for Prisms since there are many different prisms
+ */
 public abstract class Shapes implements Comparable<Shapes> {
     public double baseArea;
     public double volume;
@@ -24,10 +31,6 @@ public abstract class Shapes implements Comparable<Shapes> {
     public double getHeight() {
         return this.height;
     }
-    public double getMeasurement_2() {
-        return this.measurement_2;
-    }
-
 
     public abstract double calcBaseArea(double height, double measurement_2, shapeType type);
     public abstract double calcVolume(double height, double measurement_2, shapeType type);
